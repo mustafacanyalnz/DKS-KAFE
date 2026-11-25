@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">DKS Sahne Kafe</string>
+    <string name="brand_title">DKS SAHNE KAFE</string>
+    <string name="brand_subtitle">E-Adisyon &amp; Masa Yönetimi</string>
+    <string name="google_sign_in_cta">Google ile Bağlan</string>
+    <string name="google_sign_in_desc">Bulut veritabanı, anlık 20 masa doluluk takibi ve güvenli sipariş geçmişi için Google hesabınızla oturum açın.</string>
+    <string name="staff_login_title">Personel Girişi</string>
+    <string name="staff_login_button">Giriş Yap</string>
+    <string name="username_label">Kullanıcı Adı</string>
+    <string name="password_label">Şifre</string>
+    <string name="nav_tables">Masalar</string>
+    <string name="nav_occupancy">Doluluk</string>
+    <string name="nav_products">Ürünler</string>
+    <string name="nav_reports">Gün Sonu</string>
+    <string name="share_whatsapp">WhatsApp ile Paylaş</string>
+    <string name="close_bill">Hesabı Kapat</string>
+    <string name="save_order">Siparişi Kaydet</string>
+    <string name="switch_staff">Personel Değiştir</string>
+    <string name="sign_out_google">Google Çıkış</string>
+    <string name="access_denied_admin">Bu alan yalnızca ErdiBasaran ve MustafacanYalnz yöneticilerine açıktır.</string>
+</resources>

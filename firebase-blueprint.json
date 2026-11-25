@@ -1,0 +1,94 @@
+{
+  "entities": {
+    "StaffAccount": {
+      "title": "StaffAccount",
+      "description": "Authorized cafe staff member with salted PBKDF2 password hash and role (ADMIN or WAITER).",
+      "type": "object",
+      "properties": {
+        "username": { "type": "string", "description": "Unique login username (ErdiBasaran, MustafacanYalnz, Garson)" },
+        "displayName": { "type": "string", "description": "Display name shown in UI and receipts" },
+        "role": { "type": "string", "enum": ["ADMIN", "WAITER"], "description": "Access control role" },
+        "passwordHash": { "type": "string", "description": "PBKDF2WithHmacSHA1 Base64 password digest" },
+        "passwordSalt": { "type": "string", "description": "16-byte Base64 salt" },
+        "active": { "type": "boolean", "description": "Whether account is active" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp on update" }
+      },
+      "required": ["username", "displayName", "role", "passwordHash", "passwordSalt", "active", "createdAt", "updatedAt"]
+    },
+    "MenuProduct": {
+      "title": "MenuProduct",
+      "description": "Cafe menu item with editable price and availability managed by admins.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Product name, e.g. Çay" },
+        "category": { "type": "string", "description": "Menu category" },
+        "price": { "type": "number", "description": "Unit price in TL" },
+        "available": { "type": "boolean", "description": "Whether item is currently orderable" },
+        "sortOrder": { "type": "integer", "description": "Display sort order" },
+        "updatedBy": { "type": "string", "description": "Staff username that last updated the product" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp on update" }
+      },
+      "required": ["name", "category", "price", "available", "sortOrder", "updatedBy", "createdAt", "updatedAt"]
+    },
+    "CafeTable": {
+      "title": "CafeTable",
+      "description": "One of the 20 cafe tables tracking live occupancy and active adisyon items.",
+      "type": "object",
+      "properties": {
+        "tableNumber": { "type": "integer", "description": "Table number 1..20" },
+        "name": { "type": "string", "description": "Table label, e.g. Masa 1" },
+        "occupied": { "type": "boolean", "description": "True when table has an open tab" },
+        "waiterName": { "type": "string", "description": "Active staff username serving the table" },
+        "customerNote": { "type": "string", "description": "Optional note for the table" },
+        "items": { "type": "array", "description": "List of ordered line items (max 50)" },
+        "totalAmount": { "type": "number", "description": "Current open adisyon total in TL" },
+        "openedAtMillis": { "type": "integer", "description": "Epoch millis when table was opened, 0 when empty" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp on update" }
+      },
+      "required": ["tableNumber", "name", "occupied", "waiterName", "customerNote", "items", "totalAmount", "openedAtMillis", "createdAt", "updatedAt"]
+    },
+    "CompletedOrder": {
+      "title": "CompletedOrder",
+      "description": "Immutable completed order record for secure history and end-of-day reports.",
+      "type": "object",
+      "properties": {
+        "tableNumber": { "type": "integer", "description": "Table number 1..20" },
+        "tableName": { "type": "string", "description": "Table display name" },
+        "waiterUsername": { "type": "string", "description": "Waiter who served the order" },
+        "closedByUsername": { "type": "string", "description": "Staff user who closed the bill" },
+        "paymentMethod": { "type": "string", "enum": ["NAKİT", "KART", "HAVALE"], "description": "Payment method" },
+        "totalAmount": { "type": "number", "description": "Total paid amount in TL" },
+        "itemCount": { "type": "integer", "description": "Total item quantity" },
+        "itemsSummary": { "type": "string", "description": "Human-readable order summary" },
+        "items": { "type": "array", "description": "Snapshot of ordered line items" },
+        "businessDate": { "type": "string", "description": "YYYY-MM-DD business date" },
+        "closedAtMillis": { "type": "integer", "description": "Epoch millis when order was closed" },
+        "status": { "type": "string", "enum": ["COMPLETED"], "description": "Immutable terminal status" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation" }
+      },
+      "required": ["tableNumber", "tableName", "waiterUsername", "closedByUsername", "paymentMethod", "totalAmount", "itemCount", "itemsSummary", "items", "businessDate", "closedAtMillis", "status", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/staff/{staffId}": {
+      "schema": { "$ref": "#/entities/StaffAccount" },
+      "description": "Staff accounts belonging to the authenticated cafe operator."
+    },
+    "/users/{userId}/products/{productId}": {
+      "schema": { "$ref": "#/entities/MenuProduct" },
+      "description": "Editable cafe product catalog and pricing."
+    },
+    "/users/{userId}/tables/{tableId}": {
+      "schema": { "$ref": "#/entities/CafeTable" },
+      "description": "20 cafe tables with live occupancy and open adisyon items."
+    },
+    "/users/{userId}/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/CompletedOrder" },
+      "description": "Immutable completed order history for end-of-day reports."
+    }
+  }
+}

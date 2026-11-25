@@ -1,0 +1,6 @@
+{
+  "name": "DKS Sahne Kafe",
+  "description": "DKS SAHNE KAFE için 20 masalı e-adisyon, kullanıcı yetkilendirme, ürün yönetimi, WhatsApp paylaşımı ve gün sonu raporlama uygulaması.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
